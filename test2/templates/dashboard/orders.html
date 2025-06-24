@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block title %}Zamówienia - Gofry Business System{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-shopping-cart"></i> Lista zamówień</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
+                <i class="fas fa-plus"></i> Nowe zamówienie
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Data zamówienia</th>
+                                <th>Dostawca</th>
+                                <th>Status</th>
+                                <th>Data dostawy</th>
+                                <th>Pozycje</th>
+                                <th>Koszt</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Zamówienia będą ładowane przez JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal dla zamówień -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nowe zamówienie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="orderSupplier" class="form-label">Dostawca</label>
+                            <input type="text" class="form-control" id="orderSupplier" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="orderDate" class="form-label">Data zamówienia</label>
+                            <input type="date" class="form-control" id="orderDate" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="deliveryDate" class="form-label">Data dostawy</label>
+                            <input type="date" class="form-control" id="deliveryDate">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Pozycje zamówienia</label>
+                        <div id="orderItems">
+                            <div class="order-item border p-3 mb-2">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control item-name" placeholder="Nazwa produktu" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control item-quantity" placeholder="Ilość" step="0.1" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="form-select item-unit">
+                                            <option value="szt">szt</option>
+                                            <option value="kg">kg</option>
+                                            <option value="l">l</option>
+                                            <option value="op">op</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control item-price" placeholder="Cena" step="0.01" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeOrderItem(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success btn-sm" onclick="addOrderItem()">
+                            <i class="fas fa-plus"></i> Dodaj pozycję
+                        </button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="orderNotes" class="form-label">Notatki</label>
+                        <textarea class="form-control" id="orderNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button type="button" class="btn btn-primary" onclick="saveOrder()">Zapisz zamówienie</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/orders.js') }}"></script>
+{% endblock %}
